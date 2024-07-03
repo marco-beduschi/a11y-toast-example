@@ -19,6 +19,13 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
+const ARIA_DESCRIPTION_BY_VARIANT = {
+  notice: "notice",
+  warning: "warning",
+  success: "success",
+  error: "error",
+};
+
 function Toast({ id, variant = "notice", children }) {
   const { dismissToast } = React.useContext(ToastContext);
 
@@ -29,10 +36,17 @@ function Toast({ id, variant = "notice", children }) {
       <div className={styles.iconContainer}>
         <VariantIcon size={24} />
       </div>
-      <p className={styles.content}>{children}</p>
-      <button className={styles.closeButton} onClick={() => dismissToast(id)}>
+      <p className={styles.content}>
+        <VisuallyHidden>{ARIA_DESCRIPTION_BY_VARIANT[variant]}</VisuallyHidden>{" "}
+        - {children}
+      </p>
+      <button
+        aria-label="Dismiss message"
+        aria-live="off"
+        className={styles.closeButton}
+        onClick={() => dismissToast(id)}
+      >
         <X size={24} />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
   );
